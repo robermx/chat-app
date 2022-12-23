@@ -1,7 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { PusherService } from './pusher/pusher.service';
 
-@Controller()
+@Controller('api')
 export class AppController {
-  @Get()
-  getHello() {}
+  constructor(private pusherService: PusherService) {}
+  @Post('messages')
+  async messages(
+    @Body('username') username: string,
+    @Body('message') message: string,
+  ) {
+    await this.pusherService.trigger('chat', 'message', { username, message });
+    return [];
+  }
 }

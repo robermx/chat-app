@@ -32,6 +32,7 @@ Build a Realtime Chat App with NestJS and ReactJS.
 ```bash
 - NestJS
 - ReactJS
+- Pusher
 ```
 
 ## Credentials
