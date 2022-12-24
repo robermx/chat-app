@@ -8,6 +8,7 @@ export class AppService {
   }
 }
 
+@Injectable()
 export class PusherService {
   pusher: Pusher;
   constructor() {

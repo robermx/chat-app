@@ -33,6 +33,8 @@ Build a Realtime Chat App with NestJS and ReactJS.
 - NestJS
 - ReactJS
 - Pusher
+- TypeORM
+- Mysql
 ```
 
 ## Credentials
