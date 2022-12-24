@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import * as Pusher from 'pusher';
 
 @Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World';
+  }
+}
+
 export class PusherService {
   pusher: Pusher;
   constructor() {
