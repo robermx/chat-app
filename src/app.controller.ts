@@ -4,11 +4,14 @@ import {
   Body,
   BadRequestException,
   Res,
+  Get,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AppService, PusherService } from './app.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('api')
 export class AppController {
@@ -25,12 +28,16 @@ export class AppController {
     @Body('password') password: string,
   ) {
     const hashedPassword = await bcrypt.hash(password, 12);
-    return this.appService.create({
+    const user = await this.appService.create({
       name,
       lastname,
       email,
       password: hashedPassword,
     });
+
+    delete user.password;
+
+    return user;
   }
 
   @Post('login')
@@ -56,6 +63,23 @@ export class AppController {
     return {
       message: 'Success',
     };
+  }
+
+  @Get('user')
+  async user(@Req() request: Request) {
+    try {
+      const cookie = request.cookies['jwt'];
+      const data = await this.jwtService.verifyAsync(cookie);
+      if (!data) {
+        throw new UnauthorizedException();
+      }
+      const user = await this.appService.findOneBy({ id: data.id });
+      const { password, ...result } = user;
+
+      return result;
+    } catch (e) {
+      throw new UnauthorizedException();
+    }
   }
 }
 

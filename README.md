@@ -25,7 +25,7 @@
 
 ## Description
 
-Build a Realtime Chat App with NestJS and ReactJS.
+Build a Realtime Chat App, register and login with NestJS and ReactJS.
 
 ## Tech Stack
 
@@ -38,6 +38,7 @@ Build a Realtime Chat App with NestJS and ReactJS.
 - Mysql
 - Bcrypt
 - JWT Passport
+- Cookie Parser
 ```
 
 ## Credentials
