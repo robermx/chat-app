@@ -9,8 +9,13 @@ export class AppService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
+
   async create(data: any): Promise<User> {
     return this.userRepository.save(data);
+  }
+
+  async findOneBy(condition: any): Promise<User> {
+    return this.userRepository.findOneBy(condition);
   }
 }
 
@@ -26,6 +31,7 @@ export class PusherService {
       useTLS: true,
     });
   }
+
   async trigger(channel: string, event: string, data: any) {
     await this.pusher.trigger(channel, event, data);
   }

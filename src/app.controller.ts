@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { AppService, PusherService } from './app.service';
 import * as bcrypt from 'bcrypt';
 
@@ -20,6 +20,24 @@ export class AppController {
       email,
       password: hashedPassword,
     });
+  }
+
+  @Post('login')
+  async login(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    const user = await this.appService.findOneBy({ email });
+    if (!user) {
+      throw new BadRequestException(
+        'Invalid credentials - email does not exist',
+      );
+    }
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new BadRequestException('Invalid credentials - invalid password');
+    }
+
+    return user;
   }
 }
 
