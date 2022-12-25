@@ -61,7 +61,7 @@ export class AppController {
     response.cookie('jwt', jwt, { httpOnly: true });
 
     return {
-      message: 'Success',
+      message: 'Login success',
     };
   }
 
@@ -80,6 +80,14 @@ export class AppController {
     } catch (e) {
       throw new UnauthorizedException();
     }
+  }
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('jwt');
+    return {
+      message: 'Logout success',
+    };
   }
 }
 
