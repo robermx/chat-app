@@ -6,6 +6,7 @@ async function bootstrap() {
   app.enableCors({
     // Enable cors for React
     origin: ['http://localhost:3000'],
+    credentials: true,
   });
   await app.listen(8000);
 }

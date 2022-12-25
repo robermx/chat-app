@@ -1,10 +1,21 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  BadRequestException,
+  Res,
+} from '@nestjs/common';
 import { AppService, PusherService } from './app.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 @Controller('api')
 export class AppController {
-  constructor(private appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private jwtService: JwtService,
+  ) {}
 
   @Post('register')
   async register(
@@ -26,6 +37,7 @@ export class AppController {
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
+    @Res({ passthrough: true }) response: Response,
   ) {
     const user = await this.appService.findOneBy({ email });
     if (!user) {
@@ -37,7 +49,13 @@ export class AppController {
       throw new BadRequestException('Invalid credentials - invalid password');
     }
 
-    return user;
+    const jwt = await this.jwtService.signAsync({ id: user.id });
+
+    response.cookie('jwt', jwt, { httpOnly: true });
+
+    return {
+      message: 'Success',
+    };
   }
 }
 

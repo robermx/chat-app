@@ -34,8 +34,10 @@ Build a Realtime Chat App with NestJS and ReactJS.
 - ReactJS
 - Pusher
 - TypeORM
+- .env
 - Mysql
 - Bcrypt
+- JWT Passport
 ```
 
 ## Credentials
