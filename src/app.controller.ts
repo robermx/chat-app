@@ -28,6 +28,10 @@ export class AppController {
     @Body('password') password: string,
   ) {
     const hashedPassword = await bcrypt.hash(password, 12);
+    const userExist = await this.appService.findOneBy({ email });
+    if (userExist) {
+      throw new BadRequestException('Invalid - this email is already in use');
+    }
     const user = await this.appService.create({
       name,
       lastname,
